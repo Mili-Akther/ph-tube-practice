@@ -7,7 +7,13 @@ function getTimeString (time) {
     return `${hour} h ${minute}min ${second} sec ago`;
 
 }
-
+const removeActiveClass = () => {
+  const buttons = document.getElementsByClassName("category-btn");
+  console.log(buttons);
+  for (let btn of buttons) {
+    btn.classList.remove("active");
+  }
+};
 // 1- Fetch , load and show categories on html
 
 // create loadCategories
@@ -34,7 +40,16 @@ const loadCategoryVideos = (id) => {
   // fetch the data
   fetch(`https://openapi.programming-hero.com/api/phero-tube/category/${id}`)
     .then((res) => res.json())
-    .then((data) => displayVideos(data.category))
+    .then((data) => {
+      // sobaike active class remove korao`
+      removeActiveClass();
+      // id er class k active koro
+      const activeBtn = document.getElementById(`btn-${id}`);
+      
+      activeBtn.classList.add("active");
+      console.log(activeBtn);
+      displayVideos(data.category);
+    })
     .catch((err) => console.log(err));
 }
 // video object demo
@@ -66,7 +81,7 @@ const displayVideos = (videos) => {
   videoContainer.classList.remove("grid");
     videoContainer.innerHTML = `
     <div class="flex flex-col gap-5 justify-center items-center min-h-[300px]"> <img src="assets/Icon.png" class="" alt="empty">
-    <h2 class="text-center text-2xl font-bold">No Videos Found</h2>
+    <h2 class="text-center text-2xl font-bold">oops!! Sorry, There is no content here</h2>
     </div>`;
       return;
  }else{
@@ -125,7 +140,7 @@ categories.forEach( (item) => {
     // create a btn
     const buttonContainer = document.createElement("div");
     buttonContainer.innerHTML = `
-    <button onclick = "loadCategoryVideos(${item.category_id})" class="btn">${item.category}</button>`;
+    <button id="btn-${item.category_id}" onclick = "loadCategoryVideos(${item.category_id})" class=" btn category-btn">${item.category}</button>`;
 
 
     // add btn to  category container
