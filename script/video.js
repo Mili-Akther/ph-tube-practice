@@ -62,6 +62,17 @@ const loadCategoryVideos = (id) => {
 const displayVideos = (videos) => {
     const videoContainer = document.getElementById("videos");
     videoContainer.innerHTML = "";
+ if(videos.length == 0){
+  videoContainer.classList.remove("grid");
+    videoContainer.innerHTML = `
+    <div class="flex flex-col gap-5 justify-center items-center min-h-[300px]"> <img src="assets/Icon.png" class="" alt="empty">
+    <h2 class="text-center text-2xl font-bold">No Videos Found</h2>
+    </div>`;
+      return;
+ }else{
+  videoContainer.classList.add("grid");
+ }
+
 videos.forEach( (video) => {
     console.log(video);
     const card = document.createElement("div")
